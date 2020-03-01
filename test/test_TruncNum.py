@@ -15,19 +15,43 @@ class InputModelResultCollection:
         return [(self.input_value, mm, ee) for mm, ee in self.models_results_list]
 
 ## Test cases - input value, different models, expected result
+##############################################################
+
+## Negative exponent
 input_value_float_negative_exponent = 7.86e-3
 models_results_float_negative_exponent = [
-        ("1.00e-3", "7.86e-3"),
-        ("1.00e-4", "78.60e-4"),
-        ("1.00e-2", "0.79e-2"),
-        ("1.00e-6", "7860.00e-6"),
-        ("1.00e0", "0.01e0"),
-        ("1.000e-3", "7.860e-3"),
-        # ("1.e-3", "8.e-3"), # to decide - should this account for the decimal point?
+        ("1.00e-3", "7.86e-3"),   # Identity
+        ("1.00e-4", "78.60e-4"),  # Smaller exponent
+        ("1.00e-2", "0.79e-2"),   # Larger exponent
+        ("1.00e-6", "7860.00e-6"),# Much smaller exponent
+        ("1.00e0", "0.01e0"),     # Zero exponent
+        ("1.000e-3", "7.860e-3"), # Additional sf
+        ("1.0e-3", "7.9e-3"),     # Fewer sf
+        ("1.e-3", "8e-3"),        # Characteristic only - w/ decimal point
     ]
 collection_float_negative_exponent = InputModelResultCollection(input_value_float_negative_exponent, models_results_float_negative_exponent)
 
+## Positive exponent
+input_value_float_positive_exponent = 1.923e4
+models_results_float_positive_exponent = [
+        ("1.000e4", "1.923e4"),    # Identity
+        ("1.000e2", "192.300e2"),  # Smaller exponent
+        ("1.000e5", "0.192e5"),    # Larger exponent
+        ("1.000e7", "0.002e7"),    # Much larger exponent
+        ("1.000e0", "19230.000e0"),# Zero exponent
+        ("1.0000e4", "1.9230e4"),  # Additional sf
+        ("1.0e4", "1.9e4"),        # Fewer sf
+        ("1.e4", "2e4"),           # Characteristic only - w/ decimal point
+    ]
+collection_float_positive_exponent = InputModelResultCollection(input_value_float_positive_exponent, models_results_float_positive_exponent)
+
+## Concatenate all lists
+input_float_with_model_params = \
+    collection_float_negative_exponent.input_models_results_list \
+    + collection_float_positive_exponent.input_models_results_list
+
+
 ## Parametrized testing
-@pytest.mark.parametrize("input_value,model_string,desired_result", collection_float_negative_exponent.input_models_results_list)
+@pytest.mark.parametrize("input_value,model_string,desired_result", input_float_with_model_params)
 def test_compare_string_trunc_model_result(input_value, model_string, desired_result):
     assert str(TruncNum(input_value, model_string)) == desired_result

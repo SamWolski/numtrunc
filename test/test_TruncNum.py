@@ -17,6 +17,8 @@ class InputModelResultCollection:
 ## Test cases - input value, different models, expected result
 ##############################################################
 
+collections_float = []
+
 ## Decimals only - no 'e'
 input_value_float_decimal = 3.849
 models_results_float_decimal = [
@@ -27,7 +29,7 @@ models_results_float_decimal = [
         ("1.", "4"),              # Characteristic only - w/ decimal point
         ("1", "4"),               # Characteristic only - w/o decimal point
     ]
-collection_float_decimal = InputModelResultCollection(input_value_float_decimal, models_results_float_decimal)
+collections_float.append(InputModelResultCollection(input_value_float_decimal, models_results_float_decimal))
 
 ## Negative value with decimals only - no 'e'
 input_value_float_negative_decimal = -3.849
@@ -39,7 +41,7 @@ models_results_float_negative_decimal = [
         ("1.", "-4"),              # Characteristic only - w/ decimal point
         ("1", "-4"),               # Characteristic only - w/o decimal point
     ]
-collection_float_negative_decimal = InputModelResultCollection(input_value_float_negative_decimal, models_results_float_negative_decimal)
+collections_float.append(InputModelResultCollection(input_value_float_negative_decimal, models_results_float_negative_decimal))
 
 ## Negative exponent
 input_value_float_negative_exponent = 7.86e-3
@@ -55,7 +57,7 @@ models_results_float_negative_exponent = [
         ("1e-3", "8e-3"),         # Characteristic only - w/o decimal point
         ("1.00e-03", "7.86e-3"),  # Padded exponent
     ]
-collection_float_negative_exponent = InputModelResultCollection(input_value_float_negative_exponent, models_results_float_negative_exponent)
+collections_float.append(InputModelResultCollection(input_value_float_negative_exponent, models_results_float_negative_exponent))
 
 ## Positive exponent
 input_value_float_positive_exponent = 1.923e4
@@ -71,7 +73,7 @@ models_results_float_positive_exponent = [
         ("1e4", "2e4"),            # Characteristic only - w/o decimal point
         ("1.000e04", "1.923e4"),   # Padded exponent
     ]
-collection_float_positive_exponent = InputModelResultCollection(input_value_float_positive_exponent, models_results_float_positive_exponent)
+collections_float.append(InputModelResultCollection(input_value_float_positive_exponent, models_results_float_positive_exponent))
 
 ## Positive exponent
 input_value_float_negative_positive_exponent = -1.923e4
@@ -87,16 +89,11 @@ models_results_float_negative_positive_exponent = [
         ("1e4", "-2e4"),            # Characteristic only - w/o decimal point
         ("1.000e04", "-1.923e4"),   # Padded exponent
     ]
-collection_float_negative_positive_exponent = InputModelResultCollection(input_value_float_negative_positive_exponent, models_results_float_negative_positive_exponent)
+collections_float.append(InputModelResultCollection(input_value_float_negative_positive_exponent, models_results_float_negative_positive_exponent))
 
 
 ## Concatenate all lists
-input_float_with_model_params = \
-    collection_float_decimal.input_models_results_list \
-    + collection_float_negative_decimal.input_models_results_list \
-    + collection_float_negative_exponent.input_models_results_list \
-    + collection_float_positive_exponent.input_models_results_list \
-    + collection_float_negative_positive_exponent.input_models_results_list
+input_float_with_model_params = [params for cc in collections_float for params in cc.input_models_results_list]
 
 
 ## Parametrized testing

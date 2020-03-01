@@ -24,8 +24,8 @@ class TruncNum:
     def __str__(self):
         ## Account for self._significant_figures not being set
         sf_str = lambda s: '' if s is None else str(s)
-        format_string = '{:.'+sf_str(self._significant_figures)+'f}'
-        return format_string.format(self._decimal)+"e"+str(self.exponent)
+        format_string = '{:.'+sf_str(self.significant_figures)+'f}'
+        return format_string.format(self.decimal)+"e"+str(self.exponent)
     
     ## Arithmetic dunders
     #####################
@@ -34,6 +34,22 @@ class TruncNum:
 
     ## Attribute getters and setters
     ################################
+
+    ## No explicit setters
+
+
+    @property
+    def decimal(self):
+        return self._decimal
+
+
+    @property
+    def significant_figures(self):
+        return self._significant_figures
+
+
+    ## Explicit setters
+
 
     @property
     def exponent(self):

@@ -71,20 +71,25 @@ class TruncNum:
         self._template = True
         ## Split the model_string into decimal and exponent if 'e' is found
         if "e" in model_string:
-            decimal, exponent = model_string.split("e")
-            self._exponent = int(exponent)
+            decimal_string, exponent_string = model_string.split("e")
+            self._exponent = int(exponent_string)
         else:
-            decimal = model_string
+            decimal_string = model_string
             self._exponent = None
         ## Check if formatting should use underscores
-        if "_" in decimal:
+        if "_" in decimal_string:
             self._underscore = True
         else:
             self._underscore = False
-        ## Convert the mantissa into a string
-        mantissa = decimal.split(".")[1]
-        ## Remove underscores from the string and store the number of sf in mantissa
-        self._significant_figures = len(''.join(mantissa.split("_")))
+        ## Check if decimal point is included in template string
+        if "." in decimal_string:
+            ## Get mantissa as a string to calculate number of significant figures
+            mantissa = decimal_string.split(".")[1]
+            ## Remove underscores from the string and store the number of sf in mantissa
+            self._significant_figures = len(''.join(mantissa.split("_")))
+        else:
+            ## No sig figs after the decimal point, as it is not included in the template
+            self._significant_figures = 0
 
 
     @property

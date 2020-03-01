@@ -25,6 +25,7 @@ models_results_float_decimal = [
         ("1.00", "3.85"),         # Fewer sf (2)
         ("1.0", "3.8"),           # Fewer sf (1)
         ("1.", "4"),              # Characteristic only - w/ decimal point
+        ("1", "4"),               # Characteristic only - w/o decimal point
         ("1.00e0", "3.85e0"),     # Zero exponent
         ("1.00e-2", "384.90e-2"), # Negative exponent
     ]
@@ -41,6 +42,7 @@ models_results_float_negative_exponent = [
         ("1.000e-3", "7.860e-3"), # Additional sf
         ("1.0e-3", "7.9e-3"),     # Fewer sf
         ("1.e-3", "8e-3"),        # Characteristic only - w/ decimal point
+        ("1e-3", "8e-3"),         # Characteristic only - w/o decimal point
     ]
 collection_float_negative_exponent = InputModelResultCollection(input_value_float_negative_exponent, models_results_float_negative_exponent)
 
@@ -55,6 +57,7 @@ models_results_float_positive_exponent = [
         ("1.0000e4", "1.9230e4"),  # Additional sf
         ("1.0e4", "1.9e4"),        # Fewer sf
         ("1.e4", "2e4"),           # Characteristic only - w/ decimal point
+        ("1e4", "2e4"),           # Characteristic only - w/o decimal point
     ]
 collection_float_positive_exponent = InputModelResultCollection(input_value_float_positive_exponent, models_results_float_positive_exponent)
 

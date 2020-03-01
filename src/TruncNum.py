@@ -25,7 +25,13 @@ class TruncNum:
         ## Account for self._significant_figures not being set
         sf_str = lambda s: '' if s is None else str(s)
         format_string = '{:.'+sf_str(self.significant_figures)+'f}'
-        return format_string.format(self.decimal)+"e"+str(self.exponent)
+        decimal_string = format_string.format(self.decimal)
+        ## Add exponent string if it is not None
+        if self.exponent is None:
+            exponent_string = ''
+        else:
+            exponent_string = "e"+str(self.exponent)
+        return decimal_string+exponent_string
     
     ## Arithmetic dunders
     #####################
@@ -63,9 +69,13 @@ class TruncNum:
     @template.setter
     def template(self, model_string):
         self._template = True
-        ## Split the model_string into decimal and exponent
-        decimal, exponent = model_string.split("e")
-        self._exponent = int(exponent)
+        ## Split the model_string into decimal and exponent if 'e' is found
+        if "e" in model_string:
+            decimal, exponent = model_string.split("e")
+            self._exponent = int(exponent)
+        else:
+            decimal = model_string
+            self._exponent = None
         ## Check if formatting should use underscores
         if "_" in decimal:
             self._underscore = True
@@ -79,11 +89,17 @@ class TruncNum:
 
     @property
     def value(self):
-        return self._decimal * 10**(self._exponent)
+        if self.exponent is None:
+            return self.decimal
+        else:
+            return self.decimal * 10**(self.exponent)
     @value.setter
     def value(self, value):
-        ## Adjust value such that it is in the range of the exponent
-        decimal = value * 10**(-self._exponent)
+        if self.exponent is None:
+            decimal = value
+        else:
+            ## Adjust value such that it is in the range of the exponent
+            decimal = value * 10**(-self.exponent)
         ## Truncate to number of significant figures after decimal point
-        self._decimal = np.round(float(decimal), self._significant_figures)
+        self._decimal = np.round(float(decimal), self.significant_figures)
 

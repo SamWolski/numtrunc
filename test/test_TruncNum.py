@@ -17,6 +17,19 @@ class InputModelResultCollection:
 ## Test cases - input value, different models, expected result
 ##############################################################
 
+## Decimals only - no 'e'
+input_value_float_decimal = 3.849
+models_results_float_decimal = [
+        ("1.000", "3.849"),       # Identity
+        ("1.00000", "3.84900"),   # More sf
+        ("1.00", "3.85"),         # Fewer sf (2)
+        ("1.0", "3.8"),           # Fewer sf (1)
+        ("1.", "4"),              # Characteristic only - w/ decimal point
+        ("1.00e0", "3.85e0"),     # Zero exponent
+        ("1.00e-2", "384.90e-2"), # Negative exponent
+    ]
+collection_float_decimal = InputModelResultCollection(input_value_float_decimal, models_results_float_decimal)
+
 ## Negative exponent
 input_value_float_negative_exponent = 7.86e-3
 models_results_float_negative_exponent = [
@@ -47,7 +60,8 @@ collection_float_positive_exponent = InputModelResultCollection(input_value_floa
 
 ## Concatenate all lists
 input_float_with_model_params = \
-    collection_float_negative_exponent.input_models_results_list \
+    collection_float_decimal.input_models_results_list \
+    + collection_float_negative_exponent.input_models_results_list \
     + collection_float_positive_exponent.input_models_results_list
 
 

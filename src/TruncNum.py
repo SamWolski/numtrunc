@@ -101,10 +101,10 @@ class TruncNum:
     @value.setter
     def value(self, value):
         if self.exponent is None:
-            decimal = value
+            decimal = float(value)
         else:
             ## Adjust value such that it is in the range of the exponent
-            decimal = value * 10**(-self.exponent)
+            decimal = float(value) * 10**(-self.exponent)
         ## Truncate to number of significant figures after decimal point
         self._decimal = np.round(float(decimal), self.significant_figures)
 
